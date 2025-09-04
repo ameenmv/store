@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./reuses.css";
 
 :root {
   --black: #000000;
@@ -6,6 +7,9 @@
   --red: #db4444;
   --green: #00ff66;
   --bg: #f5f5f5;
+  --border: #b3b3b3;
+  --yellow: #ffad33;
+  --blur: #d9d9d9;
 }
 
 .containerr {

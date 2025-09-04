@@ -1,12 +1,12 @@
 <template>
-  <div class="pt-8 border-b border-[#B3B3B3] !pb-5">
+  <div class="pt-8 border-b border-[var(--border)] !pb-5">
     <div class="containerr flex justify-between items-center">
       <div class="logo font-bold text-[25px]">Exclusive</div>
       <div class="links flex gap-8 items-center">
-        <p>Home</p>
-        <p>Contact</p>
-        <p>About</p>
-        <p>Sign Up</p>
+        <p class="cursor-pointer">Home</p>
+        <p class="cursor-pointer">Contact</p>
+        <p class="cursor-pointer">About</p>
+        <p class="cursor-pointer">Sign Up</p>
       </div>
       <div class="flex gap-5">
         <div class="relative">
