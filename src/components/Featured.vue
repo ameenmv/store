@@ -28,7 +28,7 @@
             </div>
           </div>
         </div>
-        <div class="w-[48%] flex flex-col">
+        <div class="w-[48%] flex flex-col justify-between">
           <div class="h-[48%]">
             <div
               class="bg-[black] w-100% h-[100%] pt-20 flex justify-center relative"
@@ -49,6 +49,46 @@
                 <p class="border-b border-[var(--border)] w-[fit-content]">
                   Shop Now
                 </p>
+              </div>
+            </div>
+          </div>
+          <div class="h-[48%] flex justify-between">
+            <div class="flex justify-between bg-[black] w-[48%] relative">
+              <div
+                class="absolute opacity-[.8] left-[0] top-[0] w-[100%] bg-[var(--blur)] z-1 h-[100%] rounded-[50%] blur-[200px]"
+              ></div>
+              <div
+                class="w-[100%] w-100% h-[100%] pt-20 flex justify-center relative z-6"
+              >
+                <img class="mt-[-40px]" src="../assets/speakers.png" alt="" />
+                <div
+                  class="absolute flex flex-col gap-1 left-[30px] bottom-[30px] text-white"
+                >
+                  <p class="font-medium text-[26px]">Speakers</p>
+                  <p class="text-[#FAFAFA]">Amazon Wireless Speakers</p>
+                  <p class="border-b border-[var(--border)] w-[fit-content]">
+                    Shop Now
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between w-[48%] relative bg-[black]">
+              <div
+                class="absolute opacity-[.8] left-[0] top-[0] w-[100%] bg-[var(--blur)] z-1 h-[100%] rounded-[50%] blur-[200px]"
+              ></div>
+              <div
+                class="w-[100%] w-100% h-[100%] pt-20 flex justify-center relative z-5"
+              >
+                <img class="mt-[-40px]" src="../assets/gucci.png" alt="" />
+                <div
+                  class="absolute flex flex-col gap-1 left-[30px] bottom-[30px] text-white"
+                >
+                  <p class="font-medium text-[26px]">Perfume</p>
+                  <p class="text-[#FAFAFA]">GUCCI INTENSE OUD EDP</p>
+                  <p class="border-b border-[var(--border)] w-[fit-content]">
+                    Shop Now
+                  </p>
+                </div>
               </div>
             </div>
           </div>
