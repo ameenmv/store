@@ -6,8 +6,12 @@
       >
       <div class="links flex gap-8 items-center">
         <router-link to="/"><p class="cursor-pointer">Home</p></router-link>
-        <p class="cursor-pointer">Contact</p>
-        <p class="cursor-pointer">About</p>
+        <router-link to="/contact"
+          ><p class="cursor-pointer">Contact</p></router-link
+        >
+        <router-link to="about"
+          ><p class="cursor-pointer">About</p></router-link
+        >
         <router-link to="/register">
           <p class="cursor-pointer">Sign Up</p>
         </router-link>

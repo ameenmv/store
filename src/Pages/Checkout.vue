@@ -15,7 +15,7 @@
                   >First Name<span class="text-[var(--red)]">*</span></label
                 >
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -24,7 +24,7 @@
               <div>
                 <label for="" class="text-[var(--border)]">Company Name</label>
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -36,7 +36,7 @@
                 >
 
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -47,7 +47,7 @@
                   >Apartment, floor, etc. (optional)
                 </label>
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -58,7 +58,7 @@
                   >Town / City<span class="text-[var(--red)]">*</span></label
                 >
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -69,7 +69,7 @@
                   >Phone Number<span class="text-[var(--red)]">*</span></label
                 >
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -80,7 +80,7 @@
                   >Email Address<span class="text-[var(--red)]">*</span></label
                 >
                 <input
-                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--bg)] outline-none rounded-[5px]"
+                  class="py-3 mt-2 px-4 w-[100%] bg-[var(--input)] outline-none rounded-[5px]"
                   type="text"
                   name=""
                   id=""
@@ -111,7 +111,6 @@
               </div>
               <p>$650</p>
             </div>
-
             <div
               class="pb-2 mt-4 border-b border-[var(--border)] flex justify-between"
             >
@@ -128,6 +127,35 @@
               <p>Total</p>
               <p>$1750</p>
             </div>
+            <div class="flex justify-between mt-4 items-center">
+              <div class="flex gap-3 cursor-pointer">
+                <div
+                  class="w-[24px] h-[24px] border border-[1.5px] rounded-[50%] flex justify-center items-center"
+                >
+                  <div class="w-[16px] h-[16px] rounded-[50%] bg-[black]"></div>
+                </div>
+                <div class="flex items-center">Bank</div>
+              </div>
+              <div class="flex gap-3 cursor-pointer">
+                <div
+                  class="w-[24px] h-[24px] border border-[1.5px] rounded-[50%] flex justify-center items-center"
+                >
+                  <div class="w-[16px] h-[16px] rounded-[50%] bg-[black]"></div>
+                </div>
+                <div class="flex items-center">Cash on delivery</div>
+              </div>
+            </div>
+            <div class="flex gap-4 mt-10">
+              <input
+                placeholder="Cupon Code"
+                class="py-3 px-4 pr-30 border border-[var(--border)] rounded-[5px]"
+                type="text"
+                name=""
+                id=""
+              />
+              <button class="btn">Apply Coupon</button>
+            </div>
+            <button class="btn mt-8">Place Order</button>
           </div>
         </div>
       </div>
