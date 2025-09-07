@@ -8,7 +8,7 @@ import Checkout from "../Pages/Checkout.vue";
 import About from "../Pages/About.vue";
 import Contact from "../Pages/Contact.vue";
 import Profile from "../Pages/Profile.vue";
-import error from "../Pages/error.vue";
+import error from "../Pages/Error.vue";
 import ProductDetails from "../Pages/ProductDetails.vue";
 
 const routes = [
