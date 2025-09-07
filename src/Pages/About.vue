@@ -31,7 +31,7 @@
     <Footer />
   </div>
 </template>
-
+<!-- saa -->
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
