@@ -8,7 +8,7 @@
       <div class="left w-[45%] p-20 px-40 flex flex-col justify-center">
         <h1 class="text-[36px] font-medium">Create an account</h1>
         <p class="mt-3 text-[18px]">Enter your details below</p>
-        <div class="mt-8">
+        <form @submit="onSubmit" class="mt-8">
           <input
             class="border-[none] pb-2 w-[100%] border-b border-[var(--border)] outline-none"
             type="name"
@@ -16,6 +16,7 @@
             id=""
             placeholder="Name"
           />
+
           <input
             class="border-[none] pb-2 mt-10 w-[100%] border-b border-[var(--border)] outline-none"
             type=""
@@ -30,7 +31,10 @@
             id=""
             placeholder="Password"
           />
-          <button class="btn mt-10 w-[100%]">Create Account</button>
+          <button type="sybmit" class="btn mt-10 w-[100%]">
+            Create Account
+          </button>
+
           <button
             style="background: transparent"
             class="btn !text-[black] mt-6 w-[100%] flex justify-center items-center border border-[var(--border)]"
@@ -57,16 +61,25 @@
               ></router-link
             >
           </p>
-        </div>
+        </form>
       </div>
     </div>
     <Footer />
   </div>
 </template>
 
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+
+import { required, minLength, maxLength } from "@vuelidate/validators";
+
+export default {
+  components: {
+    Navbar,
+    Footer,
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>
