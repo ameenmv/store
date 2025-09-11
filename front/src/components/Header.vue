@@ -4,29 +4,16 @@
       <div
         class="w-[20%] flex flex-col border-r border-[var(--border)] gap-3 py-10"
       >
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">
-          Woman’s Fashion
-        </p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Men’s Fashion</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Electronics</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">
-          Home & Lifestyle
-        </p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Medicine</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">
-          Sports & Outdoor
-        </p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Baby’s & Toys</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">
-          Groceries & Pets
-        </p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">
-          Health & Beauty
-        </p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Phones</p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Computers</p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Smartwatch</p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Camera</p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Gaming</p>
+        <p class="text-[18px] font-medium mb-2 cursor-pointer">Headphones</p>
       </div>
       <div class="w-[80%] p-12">
         <div
-          class="flex bg-[var(--black)] w-[100%] h-[100%] p-12 justify-between text-[white]"
+          class="flex bg-[var(--black)] w-[100%] h-[100%] p-12 justify-between text-[white] h-[400px]"
         >
           <div class="w-[48%] flex flex-col justify-center gap-1">
             <div class="flex gap-3 items-center ml-[-10px]">

@@ -44,6 +44,9 @@
           >
             {{ error.$message }}
           </div>
+          <p v-if="errors.email" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.email[0] }}
+          </p>
 
           <!-- Password -->
           <input
@@ -61,6 +64,62 @@
           >
             {{ error.$message }}
           </div>
+          <p v-if="errors.password" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.password[0] }}
+          </p>
+
+          <!-- phone -->
+          <input
+            v-model.trim="form.phone"
+            @input="setTouched('phone')"
+            :class="v$.form.phone.$error ? 'is-invalid' : ''"
+            class="border-[none] pb-2 mt-10 w-[100%] border-b border-[var(--border)] outline-none"
+            type="phone"
+            placeholder="phone"
+          />
+          <div
+            v-for="error of v$.form.phone.$errors"
+            class="text-[var(--red)] mt-1 font-medium"
+            :key="error.$uid"
+          >
+            {{ error.$message }}
+          </div>
+          <p v-if="errors.phone" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.phone[0] }}
+          </p>
+
+          <!-- Address -->
+          <input
+            v-model.trim="form.address"
+            @input="setTouched('address')"
+            :class="v$.form.address.$error ? 'is-invalid' : ''"
+            class="border-[none] pb-2 mt-10 w-[100%] border-b border-[var(--border)] outline-none"
+            type="address"
+            placeholder="address"
+          />
+          <div
+            v-for="error of v$.form.address.$errors"
+            class="text-[var(--red)] mt-1 font-medium"
+            :key="error.$uid"
+          >
+            {{ error.$message }}
+          </div>
+          <p v-if="errors.address" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.address[0] }}
+          </p>
+
+          <!-- role -->
+          <select
+            v-model.trim="form.role"
+            @input="setTouched('role')"
+            class="border-[none] pb-2 mt-10 w-[100%] border-b border-[var(--border)] outline-none cursor-pointer"
+            type="role"
+            placeholder="role"
+          >
+            <option value="customer">customer</option>
+            <option value="company">company</option>
+            <option value="admin">admin</option>
+          </select>
 
           <button type="submit" class="btn mt-10 w-[100%]">
             Create Account
@@ -105,6 +164,8 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
+import axios from "axios";
+
 import useVuelidate from "@vuelidate/core";
 import {
   required,
@@ -129,7 +190,11 @@ export default {
         name: "",
         email: "",
         password: "",
+        phone: "",
+        address: "",
+        role: "customer",
       },
+      errors: {},
     };
   },
   validations() {
@@ -144,6 +209,15 @@ export default {
         password: {
           required,
           minLength: minLength(6),
+        },
+        phone: {
+          required,
+          numeric,
+          minLength: minLength(10),
+        },
+        address: {
+          required,
+          minLength: minLength(2),
         },
       },
     };
@@ -162,12 +236,58 @@ export default {
       if (theModel == "password" || theModel == "all") {
         this.v$.form.password.$touch();
       }
+      if (theModel == "phone" || theModel == "all") {
+        this.v$.form.phone.$touch();
+      }
+      if (theModel == "address" || theModel == "all") {
+        this.v$.form.address.$touch();
+      }
     },
+
     async onSubmit(event) {
       event.preventDefault();
       this.setTouched("all");
-      if (!this.v$.$invalid) {
+
+      const formData = {
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password,
+        phone: this.form.phone,
+        address: this.form.address,
+        role: this.form.role,
+      };
+      console.log(formData);
+
+      try {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/users",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // اصفر الفيلدس
+        this.form.name = "";
+        this.form.email = "";
+        this.form.password = "";
+        this.form.phone = "";
+        this.form.address = "";
+        this.form.role = "";
+        this.v$.$reset();
+        // اوديه للوجين
         this.$router.push("/login");
+
+        console.log("User registered successfully:", res.data);
+        errors.value = {};
+      } catch (err) {
+        if (err.response && err.response.data.errors) {
+          this.errors = err.response.data.errors;
+        } else {
+          console.error("Error message:", err.message);
+        }
       }
     },
   },
