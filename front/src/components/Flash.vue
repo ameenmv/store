@@ -26,15 +26,20 @@
           </div>
         </div>
       </div>
-      <div class="products">
+      <p class="mt-20 font-bold text-[30px]" v-if="loading">Loading...</p>
+      <p v-if="error" class="text-red-500">{{ error }}</p>
+      <div class="products" v-if="products.length > 0">
         <div class="product">
           <div class="imgbg">
-            <img src="../assets/product.png" alt="" />
+            <img
+              :src="`http://127.0.0.1:8000/storage/${products[6].image}`"
+              alt=""
+            />
           </div>
-          <p class="title">HAVIT HV-G92 Gamepad</p>
+          <p class="title">{{ products[8].name }}</p>
           <div class="flex">
-            <p class="price">$120</p>
-            <p class="old-price">$160</p>
+            <p class="price">${{ products[8].price }}</p>
+            <!-- <p class="old-price">$160</p> -->
           </div>
           <div class="flex">
             <div class="flex">
@@ -65,7 +70,10 @@
         </div>
         <div class="product">
           <div class="imgbg">
-            <img src="../assets/product.png" alt="" />
+            <img
+              :src="`http://127.0.0.1:8000/storage/${products[7].image}`"
+              alt=""
+            />
           </div>
           <p class="title">HAVIT HV-G92 Gamepad</p>
           <div class="flex">
@@ -180,9 +188,26 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  setup() {
-    return {};
+  data() {
+    return {
+      products: [],
+      loading: true,
+      error: null,
+    };
+  },
+  async mounted() {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/api/products");
+      console.log("Products loaded:", res.data);
+
+      this.products = res.data.data;
+      this.loading = false;
+    } catch (err) {
+      console.error("Error loading products:", err);
+    }
   },
 };
 </script>

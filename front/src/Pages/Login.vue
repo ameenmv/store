@@ -28,6 +28,9 @@
           >
             {{ error.$message }}
           </div>
+          <p v-if="errors.email" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.email[0] }}
+          </p>
 
           <!-- Password -->
           <input
@@ -45,6 +48,10 @@
           >
             {{ error.$message }}
           </div>
+          <p v-if="errors.password" class="text-[var(--red)] mt-1 font-medium">
+            {{ errors.password[0] }}
+          </p>
+
           <div class="flex mt-10 justify-between items-center">
             <button type="submit" class="btn">Log in</button>
             <p class="text-[var(--red)]">Forger Password?</p>
@@ -70,6 +77,8 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
+import axios from "axios";
+
 import useVuelidate from "@vuelidate/core";
 import {
   required,
@@ -91,10 +100,10 @@ export default {
   data() {
     return {
       form: {
-        name: "",
         email: "",
         password: "",
       },
+      errors: {},
     };
   },
   validations() {
@@ -128,11 +137,49 @@ export default {
         this.v$.form.password.$touch();
       }
     },
+
     async onSubmit(event) {
       event.preventDefault();
       this.setTouched("all");
-      if (!this.v$.$invalid) {
+
+      const formData = {
+        email: this.form.email,
+        password: this.form.password,
+        device_name: "iphone",
+      };
+      console.log(formData);
+
+      try {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/login",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // اصفر الفيلدس
+        this.form.email = "";
+        this.form.password = "";
+        this.errors = "";
+        this.v$.$reset();
+        // اوديه للوجين
         this.$router.push("/");
+
+        const token = res.data;
+
+        localStorage.setItem("token", token);
+
+        console.log("User login successfully:", res.data);
+        errors.value = {};
+      } catch (err) {
+        if (err.response && err.response.data.errors) {
+          this.errors = err.response.data.errors;
+        } else {
+          console.error("Error message:", err.message);
+        }
       }
     },
   },

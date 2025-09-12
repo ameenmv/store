@@ -276,6 +276,7 @@ export default {
         this.form.phone = "";
         this.form.address = "";
         this.form.role = "";
+        this.errors = "";
         this.v$.$reset();
         // اوديه للوجين
         this.$router.push("/login");
