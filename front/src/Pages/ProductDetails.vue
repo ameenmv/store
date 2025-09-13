@@ -6,38 +6,54 @@
         <div class="breadcrum py-10">
           <p>Home &ensp;/&ensp; About</p>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between" v-if="product">
           <div class="w-[60%] flex gap-5">
             <div class="flex flex-col justify-between">
               <div
                 class="w-[170px] h-[140px] py-5 px-7 bg-[var(--bg)] flex justify-center items-center mb-[20px] cursor-pointer"
               >
-                <img src="../assets/p2.png" alt="" />
+                <img
+                  :src="`http://127.0.0.1:8000/storage/${product.image}`"
+                  alt=""
+                />
               </div>
               <div
                 class="w-[170px] h-[140px] py-5 px-7 bg-[var(--bg)] flex justify-center items-center mb-[20px] cursor-pointer"
               >
-                <img src="../assets/p3.png" alt="" />
+                <img
+                  :src="`http://127.0.0.1:8000/storage/${product.image}`"
+                  alt=""
+                />
               </div>
               <div
                 class="w-[170px] h-[140px] py-5 px-7 bg-[var(--bg)] flex justify-center items-center mb-[20px] cursor-pointer"
               >
-                <img src="../assets/p4.png" alt="" />
+                <img
+                  :src="`http://127.0.0.1:8000/storage/${product.image}`"
+                  alt=""
+                />
               </div>
               <div
                 class="w-[170px] h-[140px] py-5 px-7 bg-[var(--bg)] flex justify-center items-center cursor-pointer"
               >
-                <img src="../assets/p5.png" alt="" />
+                <img
+                  :src="`http://127.0.0.1:8000/storage/${product.image}`"
+                  alt=""
+                />
               </div>
             </div>
             <div
+              v-if="product"
               class="flex justify-center items-center py-5 px-7 w-[100%] h-[640px] bg-[var(--bg)] cursor-pointer"
             >
-              <img src="../assets/p1.png" alt="" />
+              <img
+                :src="`http://127.0.0.1:8000/storage/${product.image}`"
+                alt=""
+              />
             </div>
           </div>
           <div class="w-[35%]">
-            <p class="text-[24px] font-medium">Havic HV G-92 Gamepad</p>
+            <p class="text-[24px] font-medium">{{ product.name }}</p>
             <div class="flex items-center mt-3 gap-4">
               <div class="flex justify-center items-center stars">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
@@ -66,13 +82,11 @@
               <div class="opacity-[.6]">|</div>
               <div class="text-[var(--green)] opacity-[.6]">In Stock</div>
             </div>
-            <div class="mt-3 text-[24px]">$192.00</div>
+            <div class="mt-3 text-[24px]">${{ product.price }}</div>
             <p class="mt-3 pb-5 border-b border-[var(--border)]">
-              PlayStation 5 Controller Skin High quality vinyl with air channel
-              adhesive for easy bubble free install & mess free removal Pressure
-              sensitive.
+              {{ product.description }}
             </p>
-            <div class="flex mt-3">
+            <!-- <div class="flex mt-3">
               <p class="text-[20px]">Colours:</p>
               <div class="flex ml-4 gap-2 items-center">
                 <div
@@ -82,8 +96,8 @@
                   class="w-[20px] h-[20px] rounded-[50%] bg-[var(--green)] cursor-pointer"
                 ></div>
               </div>
-            </div>
-            <div class="flex mt-4">
+            </div> -->
+            <!-- <div class="flex mt-4">
               <p class="text-[20px]">Size:</p>
               <div class="flex ml-5 gap-4 items-center">
                 <div
@@ -112,7 +126,7 @@
                   XL
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="flex mt-4 gap-4 items-center">
               <div
                 class="w-[160px] h-[45px] border border-[var(--border)] rounded-[5px] flex justify-between center"
@@ -414,9 +428,41 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+
+import axios from "axios";
+
+export default {
+  components: {
+    Navbar,
+    Footer,
+  },
+  data() {
+    return {
+      product: null,
+      products: [],
+      loading: true,
+    };
+  },
+  async mounted() {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/api/products");
+      console.log("Products loaded:", res.data);
+      this.products = res.data.data || res.data;
+
+      const projectId = parseInt(this.$route.params.id);
+      this.product = this.products.find((p) => p.id === projectId) || null;
+
+      console.log("selected product:", this.product);
+      this.loading = false;
+    } catch (err) {
+      console.error("Error loading products:", err);
+      this.loading = false;
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

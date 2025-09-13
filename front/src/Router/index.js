@@ -58,9 +58,10 @@ const routes = [
     component: Profile,
   },
   {
-    path: "/details",
+    path: "/:category/:id",
     name: "ProductDetails",
     component: ProductDetails,
+    props: true,
   },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: error },
 ];
