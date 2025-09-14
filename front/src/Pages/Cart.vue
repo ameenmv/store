@@ -6,7 +6,14 @@
         <div class="breadcrum py-10">
           <p>Home / Cart</p>
         </div>
-        <table class="w-[100%] border-separate border-spacing-y-4">
+        <p class="mt-20 mb-20 font-bold text-[30px]" v-if="loading">
+          Loading...
+        </p>
+        <p v-if="error" class="mt-20 font-bold text-[30px]">{{ error }}</p>
+        <table
+          v-if="products != ''"
+          class="w-[100%] border-separate border-spacing-y-4"
+        >
           <tr>
             <th class="py-4">Product</th>
             <th class="py-4 !text-center">price</th>
@@ -103,9 +110,54 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { useCartStore } from "../Stores/Products";
+import axios from "axios";
+
+export default {
+  components: {
+    Navbar,
+    Footer,
+  },
+  data() {
+    return {
+      cartId: null,
+      token: localStorage.getItem("token"),
+      products: [],
+      loading: true,
+    };
+  },
+  async mounted() {
+    const cartStore = useCartStore();
+    this.cartId = cartStore.cartId;
+
+    if (!this.cartId) {
+      console.warn("No cartId found in store, skipping request");
+      this.loading = false;
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/cart/${this.cartId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+
+      console.log("Cart data:", res.data.data.items);
+      this.products = res.data.data.items;
+      this.loading = false;
+    } catch (err) {
+      console.error("Error loading cart:", err.response?.data || err.message);
+      this.loading = false;
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

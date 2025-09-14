@@ -27,7 +27,7 @@
         </div>
       </div>
       <p class="mt-20 font-bold text-[30px]" v-if="loading">Loading...</p>
-      <p v-if="error" class="text-red-500">{{ error }}</p>
+      <p v-if="error" class="mt-20 font-bold text-[30px]">{{ error }}</p>
       <div class="products" v-if="products.length > 0">
         <div
           v-for="product in products.slice(5, 9)"

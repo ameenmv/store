@@ -151,10 +151,7 @@
                   +
                 </div>
               </div>
-              <div
-                @click="addToCart(product.id)"
-                class="btn !pt-[10px] !pb-[10px]"
-              >
+              <div @click="addToCart" class="btn !pt-[10px] !pb-[10px]">
                 Add To Cart
               </div>
 
@@ -442,6 +439,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
 import axios from "axios";
+import { useCartStore } from "../Stores/Products";
 
 export default {
   components: {
@@ -455,6 +453,7 @@ export default {
       products: [],
       loading: true,
       number: "1",
+      cartId: "",
     };
   },
   methods: {
@@ -467,24 +466,50 @@ export default {
       }
     },
 
-    addToCart(id) {
+    async addToCart() {
       const formData = {
         product_id: this.product.id,
         quantity: this.number,
+        price: this.product.price,
       };
 
-      axios
-        .post("http://127.0.0.1:8000/api/cart/2/items", formData, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        // get cart id
+        const cartRes = await axios.post(
+          "http://127.0.0.1:8000/api/cart",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        this.cartId = cartRes.data.data.id;
+        console.log("Cart created:", this.cartId);
+
+        const cartStore = useCartStore();
+        cartStore.setCartId(cartRes.data.data.id);
+        console.log("Cart ID stored:", cartStore.cartId);
+
+        // create itme on cart
+        const itemsRes = await axios.post(
+          `http://127.0.0.1:8000/api/cart/${this.cartId}/items`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        console.log("Item added:", itemsRes.data);
+      } catch (err) {
+        console.error(
+          "Error while adding to cart:",
+          err.response?.data || err.message
+        );
+      }
     },
   },
   async mounted() {
