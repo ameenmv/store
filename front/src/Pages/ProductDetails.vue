@@ -6,6 +6,8 @@
         <div class="breadcrum py-10">
           <p>Home &ensp;/&ensp; About</p>
         </div>
+        <p class="mt-20 font-bold text-[30px]" v-if="loading">Loading...</p>
+        <p v-if="error" class="text-red-500">{{ error }}</p>
         <div class="flex justify-between" v-if="product">
           <div class="w-[60%] flex gap-5">
             <div class="flex flex-col justify-between">
@@ -132,6 +134,7 @@
                 class="w-[160px] h-[45px] border border-[var(--border)] rounded-[5px] flex justify-between center"
               >
                 <div
+                  @click="minus"
                   class="w-[25%] flex justify-center items-center text-[35px] font-medium border-r border-[var(--border)] cursor-pointer"
                 >
                   -
@@ -139,15 +142,21 @@
                 <div
                   class="w-[50%] flex justify-center items-center text-[20px] font-medium"
                 >
-                  2
+                  {{ number }}
                 </div>
                 <div
+                  @click="plus"
                   class="w-[25%] flex justify-center items-center text-[30px] font-medium bg-[var(--red)] text-[#eee] cursor-pointer"
                 >
                   +
                 </div>
               </div>
-              <div class="btn !pt-[10px] !pb-[10px]">Buy Now</div>
+              <div
+                @click="addToCart(product.id)"
+                class="btn !pt-[10px] !pb-[10px]"
+              >
+                Add To Cart
+              </div>
 
               <div
                 class="flex justify-center items-center border border-[var(--border)] rounded-[5px] w-[40px] h-[40px] cursor-pointer"
@@ -441,10 +450,42 @@ export default {
   },
   data() {
     return {
+      token: localStorage.getItem("token"),
       product: null,
       products: [],
       loading: true,
+      number: "1",
     };
+  },
+  methods: {
+    plus() {
+      this.number++;
+    },
+    minus() {
+      if (this.number > 1) {
+        this.number--;
+      }
+    },
+
+    addToCart(id) {
+      const formData = {
+        product_id: this.product.id,
+        quantity: this.number,
+      };
+
+      axios
+        .post("http://127.0.0.1:8000/api/cart/2/items", formData, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   async mounted() {
     try {
