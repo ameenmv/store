@@ -504,6 +504,7 @@ export default {
         );
 
         console.log("Item added:", itemsRes.data);
+        this.$router.back();
       } catch (err) {
         console.error(
           "Error while adding to cart:",

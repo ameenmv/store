@@ -12,9 +12,13 @@
         <router-link to="about"
           ><p class="cursor-pointer">About</p></router-link
         >
-        <router-link to="/register">
+        <router-link v-if="token === null" to="/register">
           <p class="cursor-pointer">Sign Up</p>
         </router-link>
+
+        <p @click="logOut" v-if="token !== null" class="cursor-pointer">
+          Log Out
+        </p>
       </div>
       <div class="flex gap-5">
         <div class="relative">
@@ -62,9 +66,22 @@
 </template>
 
 <script>
+import { useCartStore } from "../Stores/Products";
+
 export default {
-  setup() {
-    return {};
+  data() {
+    return {
+      token: localStorage.getItem("token"),
+    };
+  },
+  methods: {
+    logOut() {
+      localStorage.removeItem("token");
+      this.token = null;
+      const store = useCartStore();
+      store.clearCart();
+      this.$router.push("/login");
+    },
   },
 };
 </script>
