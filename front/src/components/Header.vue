@@ -4,12 +4,29 @@
       <div
         class="w-[20%] flex flex-col border-r border-[var(--border)] gap-3 py-10"
       >
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Phones</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Computers</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Smartwatch</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Camera</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Gaming</p>
-        <p class="text-[18px] font-medium mb-2 cursor-pointer">Headphones</p>
+        <router-link to="/all"
+          ><p class="text-[18px] font-medium mb-2 cursor-pointer">
+            All Categories
+          </p></router-link
+        >
+        <router-link to="/phones">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Phones</p>
+        </router-link>
+        <router-link to="/computers">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Computers</p>
+        </router-link>
+        <router-link to="/smartwatch">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Smartwatch</p>
+        </router-link>
+        <router-link to="/camera">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Camera</p>
+        </router-link>
+        <router-link to="/gaming">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Gaming</p>
+        </router-link>
+        <router-link to="/headphones">
+          <p class="text-[18px] font-medium mb-2 cursor-pointer">Headphones</p>
+        </router-link>
       </div>
       <div class="w-[80%] p-12">
         <div

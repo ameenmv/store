@@ -77,6 +77,7 @@ export default {
   methods: {
     logOut() {
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       this.token = null;
       const store = useCartStore();
       store.clearCart();

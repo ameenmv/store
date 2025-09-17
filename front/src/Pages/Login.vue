@@ -147,33 +147,49 @@ export default {
         password: this.form.password,
         device_name: "iphone",
       };
-      console.log(formData);
 
       try {
         const res = await axios.post(
           "http://127.0.0.1:8000/api/login",
           formData,
           {
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           }
         );
 
-        // اصفر الفيلدس
-        this.form.email = "";
-        this.form.password = "";
-        this.errors = "";
-        this.v$.$reset();
-        // اوديه للوجين
-        this.$router.push("/");
-
-        const token = res.data;
-
+        const token = res.data; // الـ token اللي رجع من السيرفر
         localStorage.setItem("token", token);
 
-        console.log("User login successfully:", res.data);
-        errors.value = {};
+        // هات بيانات اليوزرين
+        const usersRes = await axios.get("http://127.0.0.1:8000/api/users", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const users = usersRes.data.data;
+        const loggedUser = users.find(
+          (u) => u.email.toLowerCase() === this.form.email.toLowerCase()
+        );
+
+        if (!loggedUser) {
+          throw new Error("User not found in API");
+        }
+
+        localStorage.setItem("role", loggedUser.role);
+
+        // نظّف الفورم
+        this.form.email = "";
+        this.form.password = "";
+        this.errors = {};
+        this.v$.$reset();
+
+        // وديه حسب الـ role
+        if (loggedUser.role === "admin") {
+          this.$router.push("/admin");
+        } else if (loggedUser.role === "company") {
+          this.$router.push("/company");
+        } else {
+          this.$router.push("/");
+        }
       } catch (err) {
         if (err.response && err.response.data.errors) {
           this.errors = err.response.data.errors;
