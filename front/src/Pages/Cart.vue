@@ -28,7 +28,7 @@
                 :src="`http://127.0.0.1:8000/storage/${product.product.image}`"
                 alt=""
               />
-              <p>H1 Gamepad</p>
+              <p>{{ product.product.name }}</p>
             </td>
             <td class="py-6 !text-center">${{ product.product.price }}</td>
             <td class="py-6 !text-center">{{ product.quantity }}</td>

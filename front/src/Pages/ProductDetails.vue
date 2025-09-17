@@ -219,6 +219,17 @@
             <div class="rectangle"></div>
             <p>Reviews</p>
           </div>
+          <div v-for="review in productReviews" :key="review.id" class="flex">
+            <span
+              v-for="star in 5"
+              :key="star"
+              class="text-yellow-400 text-2xl"
+            >
+              {{ star <= review.rating ? "★" : "☆" }}
+            </span>
+
+            {{ review.comment }}
+          </div>
         </div>
         <!-- rating -->
         <div class="rating">
@@ -491,7 +502,7 @@ export default {
       product: null,
       products: [],
       loading: true,
-      number: "1",
+      number: 1,
       cartId: "",
       rating: 0,
       review: "",
@@ -514,12 +525,13 @@ export default {
       }
     },
 
-    addReview() {
+    async addReview() {
       const form = {
         product_id: this.product.id,
         rating: this.rating,
         comment: this.review,
       };
+
       if (this.review === "" && this.rating === 0) {
         this.reviewError = "Review & Rate is required";
         return;
@@ -529,16 +541,26 @@ export default {
       } else if (this.review === "") {
         this.reviewError = "Review is required";
         return;
-      } else {
-        this.reviewError = "";
-        axios.post("http://127.0.0.1:8000/api/reviews", form, {
+      }
+
+      this.reviewError = "";
+
+      try {
+        await axios.post("http://127.0.0.1:8000/api/reviews", form, {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
         });
+        this.review = ""; // امسح التعليق بعد ما يتسجل
+        this.rating = 0; // رجّع النجوم فاضية
+        await this.fetchReviews();
+      } catch (err) {
+        console.error(
+          "Error adding review:",
+          err.response?.data || err.message
+        );
       }
     },
-
     async addToCart() {
       const formData = {
         product_id: this.product.id,
@@ -585,6 +607,24 @@ export default {
         );
       }
     },
+
+    // fetch reviews
+    async fetchReviews() {
+      try {
+        const res = await axios.get(`http://127.0.0.1:8000/api/reviews`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.reviews = res.data.data;
+        console.log("Reviews loaded:", this.reviews);
+      } catch (err) {
+        console.error(
+          "Error loading reviews:",
+          err.response?.data || err.message
+        );
+      }
+    },
   },
   async mounted() {
     // get products
@@ -603,16 +643,12 @@ export default {
       this.loading = false;
     }
     // get veviews
-    try {
-      const res = await axios.get("http://127.0.0.1:8000/api/reviews");
-      this.reviews = res.data.data;
-      console.log("Reviews loaded:", this.reviews);
-    } catch (err) {
-      console.error(
-        "Error loading reviews:",
-        err.response?.data || err.message
-      );
-    }
+    await this.fetchReviews();
+  },
+  computed: {
+    productReviews() {
+      return this.reviews.filter((r) => r.product_id === this.product.id);
+    },
   },
 };
 </script>
