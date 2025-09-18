@@ -3,7 +3,7 @@
     <navbar2 />
     <div class="bg-[#F6F8FA] h-[100vh]">
       <div class="!pt-25 flex justify-between containerr">
-        <div class="w-[20%]">
+        <div class="w-[25%]">
           <div
             @click="active = 'one'"
             :class="active === 'one' ? 'active' : ''"
@@ -47,7 +47,10 @@
             <p class="text-[18px] font-medium">Products</p>
           </div>
         </div>
-        <div class="w-[75%]">s</div>
+        <div class="w-[72%] p-6 bg-white rounded-[8px]">
+          <div v-if="active === 'one'">one</div>
+          <div v-if="active === 'two'">two</div>
+        </div>
       </div>
     </div>
     <Footer />
