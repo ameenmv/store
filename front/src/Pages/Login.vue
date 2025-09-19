@@ -175,6 +175,7 @@ export default {
         }
 
         localStorage.setItem("role", loggedUser.role);
+        localStorage.setItem("userId", loggedUser.id);
 
         // نظّف الفورم
         this.form.email = "";

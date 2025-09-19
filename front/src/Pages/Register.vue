@@ -223,9 +223,6 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      alert("Form submitted!");
-    },
     setTouched(theModel) {
       if (theModel == "name" || theModel == "all") {
         this.v$.form.name.$touch();

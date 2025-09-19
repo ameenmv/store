@@ -78,6 +78,7 @@ export default {
     logOut() {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
+      localStorage.removeItem("userId");
       this.token = null;
       const store = useCartStore();
       store.clearCart();

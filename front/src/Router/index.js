@@ -12,7 +12,6 @@ import error from "../Pages/Error.vue";
 import ProductDetails from "../Pages/ProductDetails.vue";
 import Category from "../Pages/Category.vue";
 
-// Dashboards
 import CompanyDashboard from "../Pages/CompanyDashboard.vue";
 import AdminDashboard from "../Pages/AdminDashboard.vue";
 
@@ -31,7 +30,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: { role: "customer" }, // 👈 يوزر عادي
+    meta: { role: "customer" },
   },
   {
     path: "/register",
@@ -118,14 +117,12 @@ const router = createRouter({
 // 🚨 الحماية بالـ Router Guards
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role"); // 👈 انت بتحفظها من login
+  const role = localStorage.getItem("role");
 
-  // لو مفيش توكن وهو بيحاول يدخل حاجة غير login/register → رجعه على login
   if (!token && to.name !== "Login" && to.name !== "register") {
     return next({ name: "Login" });
   }
 
-  // لو الصفحة ليها role محدد وهو مش نفس الـ role بتاع اليوزر → Error
   if (to.meta.role && to.meta.role !== role) {
     return next({ name: "NotFound" });
   }
