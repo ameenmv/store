@@ -50,55 +50,84 @@
         <div class="w-[72%] p-8 bg-white rounded-[12px] boxshadow">
           <div v-if="active === 'one'">
             <div class="flex gap-3 flex-col w-[100%]">
-              <div class="flex flex-col gap-3 w-[100%]">
+              <div class="flex gap-3 flex-col w-[100%]">
+                <!-- Product Name -->
                 <label class="font-medium">Product Name</label>
                 <input
                   v-model="productName"
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
                   type="text"
-                  name=""
-                  id=""
                 />
+                <p v-if="errors.productName" class="text-red-500 text-sm">
+                  {{ errors.productName }}
+                </p>
+
+                <!-- Product Description -->
                 <label class="font-medium">Product Description</label>
                 <input
                   v-model="productDescription"
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
                   type="text"
-                  name=""
-                  id=""
                 />
-                <label class="font-medium">Product Price</label>
+                <p
+                  v-if="errors.productDescription"
+                  class="text-red-500 text-sm"
+                >
+                  {{ errors.productDescription }}
+                </p>
+
+                <!-- Product Price -->
+                <label class="font-medium">Product Price in dollars</label>
                 <input
                   v-model="productPrice"
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
                   type="text"
-                  name=""
-                  id=""
+                  @input="productPrice = productPrice.replace(/[^0-9]/g, '')"
                 />
+                <p v-if="errors.productPrice" class="text-red-500 text-sm">
+                  {{ errors.productPrice }}
+                </p>
+
+                <!-- Stock -->
                 <label class="font-medium">Stock</label>
                 <input
                   v-model="productStock"
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
-                  type="text"
-                  name=""
-                  id=""
+                  type="number"
                 />
+                <p v-if="errors.productStock" class="text-red-500 text-sm">
+                  {{ errors.productStock }}
+                </p>
+
+                <!-- Category -->
                 <label class="font-medium">Select Category</label>
                 <select
                   v-model="productCategory"
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
-                  type="text"
-                  name=""
-                  id=""
                 >
+                  <option disabled value="">-- Choose a Category --</option>
                   <option value="phones">phones</option>
-                  <option value="phones">computers</option>
-                  <option value="phones">smartwatch</option>
-                  <option value="phones">camera</option>
-                  <option value="phones">gaming</option>
-                  <option value="phones">headphones</option>
+                  <option value="computers">computers</option>
+                  <option value="smartwatch">smartwatch</option>
+                  <option value="camera">camera</option>
+                  <option value="gaming">gaming</option>
+                  <option value="headphones">headphones</option>
                 </select>
+                <p v-if="errors.productCategory" class="text-red-500 text-sm">
+                  {{ errors.productCategory }}
+                </p>
+                <!-- product image -->
+                <label class="font-medium">Product Image</label>
+                <input
+                  ref="productInput"
+                  @change="handleProductImage"
+                  type="file"
+                  accept="image/*"
+                  class="p-4 border border-[var(--border)] font-semibold cursor-pointer w-[300px] rounded-[30px]"
+                  placeholder="Change Avatar "
+                />
 
+                <!-- Submit -->
                 <button
                   @click="addProduct"
                   class="btn w-[fit-content] self-center mt-4"
@@ -277,6 +306,12 @@ export default {
         address: "",
       },
       changeimg: "",
+      productName: "",
+      productDescription: "",
+      productPrice: "",
+      productStock: "",
+      productCategory: "",
+      productimg: "",
       errors: {},
     };
   },
@@ -310,6 +345,12 @@ export default {
       const file = event.target.files[0];
       if (file) {
         this.changeimg = file;
+      }
+    },
+    handleProductImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.productimg = file;
       }
     },
     setTouched(theModel) {
@@ -351,15 +392,58 @@ export default {
       }
     },
 
-    async addProduct() {
+    addProduct() {
+      this.errors = {};
+
+      if (!this.productName) {
+        this.errors.productName = "Product name is required";
+      }
+      if (!this.productDescription) {
+        this.errors.productDescription = "Product description is required";
+      }
+      if (!this.productPrice) {
+        this.errors.productPrice = "Product price is required";
+      } else if (isNaN(this.productPrice)) {
+        this.errors.productPrice = "Product price must be a number";
+      }
+      if (!this.productStock) {
+        this.errors.productStock = "Stock is required";
+      } else if (isNaN(this.productStock)) {
+        this.errors.productStock = "Stock must be a number";
+      }
+      if (!this.productCategory) {
+        this.errors.productCategory = "Category is required";
+      }
+      if (Object.keys(this.errors).length > 0) {
+        return;
+      }
+
       const newProduct = {
         name: this.productName,
         description: this.productDescription,
         price: this.productPrice,
         stock: this.productStock,
-        category: this.productCategory,
+        category_id: 1,
+        image: this.productimg,
       };
-      console.log(newProduct);
+      axios.post("http://127.0.0.1:8000/api/products", newProduct, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      this.productName = "";
+      this.productDescription = "";
+      this.productPrice = "";
+      this.productStock = "";
+      this.productCategory = "";
+      this.productimg = "";
+      if (this.$refs.productInput) {
+        this.$refs.productInput.value = "";
+      }
+
+      console.log("Form submitted:", newProduct);
     },
 
     async update() {
