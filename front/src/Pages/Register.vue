@@ -118,7 +118,6 @@
           >
             <option value="customer">customer</option>
             <option value="company">company</option>
-            <option value="admin">admin</option>
           </select>
 
           <button type="submit" class="btn mt-10 w-[100%]">

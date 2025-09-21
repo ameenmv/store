@@ -106,12 +106,12 @@
                   class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
                 >
                   <option disabled value="">-- Choose a Category --</option>
-                  <option value="phones">phones</option>
-                  <option value="computers">computers</option>
-                  <option value="smartwatch">smartwatch</option>
-                  <option value="camera">camera</option>
-                  <option value="gaming">gaming</option>
-                  <option value="headphones">headphones</option>
+                  <option value="1">phones</option>
+                  <option value="2">computers</option>
+                  <option value="3">smartwatch</option>
+                  <option value="4">camera</option>
+                  <option value="5">gaming</option>
+                  <option value="6">headphones</option>
                 </select>
                 <p v-if="errors.productCategory" class="text-red-500 text-sm">
                   {{ errors.productCategory }}
@@ -299,6 +299,7 @@ export default {
       active: "one",
       users: [],
       user: null,
+      company_id: null,
       form: {
         name: "",
         email: "",
@@ -423,7 +424,8 @@ export default {
         description: this.productDescription,
         price: this.productPrice,
         stock: this.productStock,
-        category_id: 1,
+        category_id: this.productCategory,
+        company_id: this.company_id,
         image: this.productimg,
       };
       axios.post("http://127.0.0.1:8000/api/products", newProduct, {
@@ -461,7 +463,7 @@ export default {
 
       try {
         await axios.post(
-          `http://127.0.0.1:8000/api/users/${this.userId}?_method=PUT`, // 👈 خليها POST مع _method=PUT
+          `http://127.0.0.1:8000/api/users/${this.userId}?_method=PUT`,
           formData,
           {
             headers: {
@@ -494,6 +496,25 @@ export default {
       this.$router.push("/login");
     } else {
       this.fetchUser();
+      const companiesRes = await axios.get(
+        "http://127.0.0.1:8000/api/companies",
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const companies = companiesRes.data.data; // هنا الـ Array فعلاً
+      console.log("All companies:", companies);
+
+      const myCompany = companies.find(
+        (company) => company.email === this.user.email
+      );
+
+      console.log("My company:", myCompany.id);
+      this.company_id = myCompany.id;
     }
   },
 };
