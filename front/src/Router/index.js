@@ -30,7 +30,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: { role: "customer" },
   },
   {
     path: "/register",
@@ -88,6 +87,7 @@ const routes = [
     component: AdminDashboard,
     meta: { role: "admin" },
   },
+
   {
     path: "/:category",
     name: "Category",
@@ -119,14 +119,27 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  if (!token && to.name !== "Login" && to.name !== "register") {
+  // الصفحات اللي لازم تسجيل دخول
+  const protectedRoutes = [
+    "Cart",
+    "Checkout",
+    "Wishlist",
+    "Profile",
+    "CompanyDashboard",
+    "AdminDashboard",
+  ];
+
+  // لو الصفحة محمية ومفيش توكن → يروح للوجين
+  if (protectedRoutes.includes(to.name) && !token) {
     return next({ name: "Login" });
   }
 
+  // لو ليها role محدد ومش مطابق للـ role بتاع اليوزر → يروح للـ NotFound
   if (to.meta.role && to.meta.role !== role) {
     return next({ name: "NotFound" });
   }
 
+  // غير كدا كله مسموح
   next();
 });
 

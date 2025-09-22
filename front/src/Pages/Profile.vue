@@ -1,102 +1,157 @@
+
 <template>
   <div>
-    <Navbar />
-    <div class="py-20">
-      <div class="containerr">
-        <div class="breadcrum py-10 flex justify-between items-center">
-          <p>Home &ensp;/&ensp; About</p>
-          <p>Welcome <span class="text-[var(--red)]">Ameen</span></p>
-        </div>
-        <div class="mt-8 flex justify-between">
-          <div class="w-[20%]">
-            <p class="font-medium">Manage My Account</p>
-            <div class="pl-8">
-              <p class="text-[black] opacity-[.8] mt-4">My Profile</p>
-              <p class="text-[black] opacity-[.8] mt-2">Address Book</p>
-              <p class="text-[black] opacity-[.8] mt-2">My Payment Options</p>
-            </div>
-            <p class="font-medium mt-5">Manage My Account</p>
-            <div class="pl-8">
-              <p class="text-[black] opacity-[.8] mt-4">My Returns</p>
-              <p class="text-[black] opacity-[.8] mt-2">My Cancellations</p>
-            </div>
-            <p class="font-medium mt-5">My WishList</p>
-          </div>
-          <div class="w-[70%] pt-8">
-            <p class="font-medium text-[var(--red)] text-[20px]">
-              Edit Your Profile
-            </p>
-            <div class="mt-5 flex gap-14">
-              <div class="flex flex-col">
-                <label for="" class="">First Name</label>
-                <input
-                  class="py-3 pr-[50px] mt-2 px-4 w-[350px] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="text"
-                  name=""
-                  id=""
-                />
-              </div>
-              <div class="flex flex-col">
-                <label for="" class="">Last Name</label>
-                <input
-                  class="py-3 pr-[50px] mt-2 px-4 w-[350px] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="text"
-                  name=""
-                  id=""
-                />
-              </div>
-            </div>
-            <div class="mt-6 flex gap-14">
-              <div class="flex flex-col">
-                <label for="" class="">Email</label>
-                <input
-                  class="py-3 pr-[50px] mt-2 px-4 w-[350px] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="email"
-                  name=""
-                  id=""
-                />
-              </div>
-              <div class="flex flex-col">
-                <label for="" class="">Address</label>
-                <input
-                  class="py-3 pr-[50px] mt-2 px-4 w-[350px] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="address"
-                  name=""
-                  id=""
-                />
-              </div>
-            </div>
-            <div class="mt-6">
-              <div class="flex flex-col">
-                <label for="" class="">Password Change</label>
-                <input
-                  placeholder="Current Password"
-                  class="py-3 pr-[50px] mt-2 px-4 w-[85%] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="email"
-                  name=""
-                  id=""
-                />
-                <input
-                  placeholder="New Password"
-                  class="py-3 pr-[50px] mt-4 px-5 w-[85%] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="email"
-                  name=""
-                  id=""
-                />
-                <input
-                  placeholder="Confirm New Password"
-                  class="py-3 pr-[50px] mt-4 px-5 w-[85%] bg-[var(--input)] outline-none rounded-[5px]"
-                  type="email"
-                  name=""
-                  id=""
-                />
-              </div>
-            </div>
+    <navbar />
+    <div class="bg-[#F6F8FA]">
+      <div class="!pt-20 !pb-20 flex justify-between containerr">
+        <div class="w-[25%] pt-10">
+          <div
+            @click="active = 'one'"
+            :class="active === 'one' ? 'active' : ''"
+            class="flex gap-3 items-center p-3 rounded-[8px] cursor-pointer"
+          >
             <div
-              class="mt-14 mr-[130px] place-self-end flex gap-10 justify-center items-center"
+              class="w-[20px] h-[20px] rounded-[50%] flex justify-center items-center bg-[#0E0E0E]"
             >
-              <p class="font-mdeium">Cencel</p>
-              <button class="btn">Save Changes</button>
+              <svg
+                width="15px"
+                fill="white"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 640"
+              >
+                <path
+                  d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"
+                />
+              </svg>
+            </div>
+            <p class="text-[18px] font-medium">Account Details</p>
+          </div>
+        </div>
+        <div class="w-[72%] p-8 bg-white rounded-[12px] boxshadow">
+          <div v-if="active === 'one'">
+            <p class="font-semibold text-[22px]">Account Details</p>
+            <p class="mt-2 opacity-[.5] font-medium">
+              Manage Your Exclusive Profile
+            </p>
+            <div class="flex mt-10 gap-8 items-center p-6">
+              <img
+                v-if="user && user.image_url"
+                :src="`http://127.0.0.1:8000/storage/${user.image_url}`"
+                class="w-[100px] h-[100px] rounded-[50%]"
+                alt=""
+              />
+              <img
+                v-else
+                src="../assets/user.jpg"
+                class="w-[100px] h-[100px] rounded-[50%]"
+                alt=""
+              />
+
+              <div class="flex flex-col">
+                <p class="font-medium">Profile Picture</p>
+                <p class="mt-2 opacity-[.5] font-medium">
+                  PNG, JPG, GIF max size of 5MB
+                </p>
+              </div>
+              <input
+                ref="fileInput"
+                @change="handleFile"
+                type="file"
+                accept="image/*"
+                class="p-4 border border-[var(--border)] font-semibold cursor-pointer w-[300px] rounded-[30px]"
+                placeholder="Change Avatar "
+              />
+            </div>
+            <div class="flex gap-3 mt-10 flex-col w-[100%]">
+              <div class="flex flex-col gap-3 w-[100%]">
+                <label class="font-medium">Name</label>
+                <input
+                  v-model="form.name"
+                  @input="setTouched('name')"
+                  :class="v$.form.name.$error ? 'is-invalid' : ''"
+                  class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
+                  :placeholder="user ? user.name : ''"
+                  type="name"
+                  name=""
+                  id=""
+                />
+                <div
+                  v-for="error of v$.form.name.$errors"
+                  :key="error.$uid"
+                  class="text-[var(--red)] mt-1 font-medium"
+                >
+                  {{ error.$message }}
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 w-[100%]">
+                <label class="font-medium">Email</label>
+                <input
+                  v-model="form.email"
+                  @input="setTouched('email')"
+                  :class="v$.form.email.$error ? 'is-invalid' : ''"
+                  class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
+                  :placeholder="user ? user.email : ''"
+                  type="email"
+                />
+
+                <div
+                  v-for="error of v$.form.email.$errors"
+                  :key="error.$uid"
+                  class="text-[var(--red)] mt-1 font-medium"
+                >
+                  {{ error.$message }}
+                </div>
+                <p
+                  v-if="errors.email"
+                  class="text-[var(--red)] mt-1 font-medium"
+                >
+                  {{ errors.email[0] }}
+                </p>
+              </div>
+              <div class="flex flex-col gap-3 w-[100%]">
+                <label class="font-medium">Phone</label>
+                <input
+                  v-model="form.phone"
+                  @input="setTouched('phone')"
+                  :class="v$.form.phone.$error ? 'is-invalid' : ''"
+                  class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
+                  :placeholder="user ? user.phone : ''"
+                  type="phone"
+                  name=""
+                  id=""
+                />
+                <div
+                  v-for="error of v$.form.phone.$errors"
+                  :key="error.$uid"
+                  class="text-[var(--red)] mt-1 font-medium"
+                >
+                  {{ error.$message }}
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 w-[100%]">
+                <label class="font-medium">Address</label>
+                <input
+                  v-model="form.address"
+                  @input="setTouched('address')"
+                  :class="v$.form.address.$error ? 'is-invalid' : ''"
+                  class="border border-[#00000021] py-2 px-2 outline-none rounded-[4px]"
+                  :placeholder="user ? user.address : ''"
+                  type="Address"
+                  name=""
+                  id=""
+                />
+                <div
+                  v-for="error of v$.form.address.$errors"
+                  :key="error.$uid"
+                  class="text-[var(--red)] mt-1 font-medium"
+                >
+                  {{ error.$message }}
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-10">
+              <button class="btn">Delete Account</button>
+              <button @click="update" class="btn !bg-[#000222]">Update</button>
             </div>
           </div>
         </div>
@@ -106,9 +161,195 @@
   </div>
 </template>
 
-<script setup>
-import Navbar from "../components/Navbar.vue";
+<script>
 import Footer from "../components/Footer.vue";
+import Navbar from "../components/Navbar.vue";
+
+import axios from "axios";
+const token = localStorage.getItem("token");
+
+import useVuelidate from "@vuelidate/core";
+import {
+  required,
+  email,
+  alpha,
+  numeric,
+  minLength,
+  maxLength,
+} from "@vuelidate/validators";
+
+export default {
+  components: { Navbar, Footer },
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  data() {
+    return {
+      token: localStorage.getItem("token"),
+      userId: localStorage.getItem("userId"),
+      active: "one",
+      users: [],
+      user: null,
+      company_id: null,
+      form: {
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+      },
+      showPopup: false,
+      popupPosition: { top: 0, left: 0 },
+      currentProductId: null, 
+
+      updatedProductName: "",
+      updatedProductDescription: "",
+      updatedProductPrice: "",
+      updatedProductStock: "",
+
+      changeimg: "",
+      productName: "",
+      productDescription: "",
+      productPrice: "",
+      productStock: "",
+      productCategory: "",
+      productimg: "",
+      currentProductid: null,
+      products: {},
+      errors: {},
+    };
+  },
+  validations() {
+    return {
+      form: {
+        name: {
+          required,
+          minLength: minLength(3),
+          maxLength: maxLength(15),
+        },
+        email: { required, email },
+        password: {
+          required,
+          minLength: minLength(6),
+        },
+        phone: {
+          required,
+          numeric,
+          minLength: minLength(10),
+        },
+        address: {
+          required,
+          minLength: minLength(2),
+        },
+      },
+    };
+  },
+  methods: {
+    handleFile(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.changeimg = file;
+      }
+    },
+
+    setTouched(theModel) {
+      if (theModel == "name" || theModel == "all") {
+        this.v$.form.name.$touch();
+      }
+      if (theModel == "email" || theModel == "all") {
+        this.v$.form.email.$touch();
+      }
+      if (theModel == "phone" || theModel == "all") {
+        this.v$.form.phone.$touch();
+      }
+      if (theModel == "address" || theModel == "all") {
+        this.v$.form.address.$touch();
+      }
+    },
+    async fetchUser() {
+      try {
+        const usersRes = await axios.get("http://127.0.0.1:8000/api/users", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.users = usersRes.data.data;
+        const user = this.users.find((i) => i.id == this.userId);
+        this.user = user;
+        this.form.name = this.user.name;
+        this.form.email = this.user.email;
+        this.form.phone = this.user.phone;
+        this.form.address = this.user.address;
+        this.errors = "";
+
+        console.log("Logged in user:", this.user);
+      } catch (err) {
+        console.error(
+          "Error fetching users:",
+          err.response?.data || err.message
+        );
+      }
+    },
+
+    // update profile
+    async update() {
+      this.setTouched("all");
+
+      const formData = new FormData();
+      if (this.changeimg) {
+        
+        formData.append("image_url", this.changeimg);
+      }
+      formData.append("name", this.form.name);
+      formData.append("email", this.form.email);
+      formData.append("phone", this.form.phone);
+      formData.append("address", this.form.address);
+
+      try {
+        await axios.post(
+          `http://127.0.0.1:8000/api/users/${this.userId}?_method=PUT`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Profile updated:", formData);
+        this.changeimg = "";
+        if (this.$refs.fileInput) {
+          this.$refs.fileInput.value = "";
+        }
+
+        this.fetchUser();
+      } catch (err) {
+        if (err.response && err.response.data.errors) {
+          this.errors = err.response.data.errors;
+          console.error("Validation errors:", this.errors);
+        }
+        console.error(
+          "Error updating profile:",
+          err.response?.data || err.message
+        );
+      }
+    },
+  },
+  async mounted() {
+    if (!this.token) {
+      this.$router.push("/login");
+    } else {
+      this.fetchUser();
+    }
+  },
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.active {
+  background: #dfe1e3;
+  color: hsla(0, 0%, 0%, 0.536) C0D;
+}
+.boxshadow {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
+</style>

@@ -65,7 +65,7 @@
                   <td class="py-6 flex items-center gap-6 !w-full">
                     <img
                       class="w-[50px] h-[50px]"
-                      :src="`http://127.0.0.1:8000/storage/${users.image_url}`"
+                      :src="`http://127.0.0.1:8000/storage/${user.image_url}`"
                       alt=""
                     />
                   </td>
@@ -101,11 +101,11 @@
                   class="fixed popup bg-white shadow-lg rounded-lg p-6 w-[450px] text-center z-50 border border-[var(--border)]"
                 >
                   <h2 class="text-lg font-semibold mb-6">
-                    Are you sure you want to delete this item?
+                    Are you sure you want to delete this user?
                   </h2>
                   <div class="flex justify-center gap-4">
                     <button
-                      @click="confirmDelete"
+                      @click="deleteUser"
                       class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer"
                     >
                       yes
@@ -228,7 +228,7 @@ export default {
       this.currentUser = userId;
       const rect = event.target.getBoundingClientRect();
       this.popupPosition = {
-        top: rect.bottom + window.scrollY + 5, // 5px تحت الزر
+        top: rect.bottom + window.scrollY + 5,
         left: rect.left + window.scrollX - 150,
       };
       this.showPopup = true;

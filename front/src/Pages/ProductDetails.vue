@@ -219,14 +219,53 @@
             <div class="rectangle"></div>
             <p>Reviews</p>
           </div>
-          <div v-for="review in productReviews" :key="review.id" class="flex">
-            <span
-              v-for="star in 5"
-              :key="star"
-              class="text-yellow-400 text-2xl"
-            >
-              {{ star <= review.rating ? "★" : "☆" }}
-            </span>
+          <div
+            v-for="review in productReviews"
+            :key="review.id"
+            class="mt-5 border-b border-[var(--border)] pb-5"
+          >
+            <div class="flex gap-5">
+              <img
+                v-if="users.find((u) => u.id === review.user_id)?.image_url"
+                :src="`http://127.0.0.1:8000/storage/${
+                  users.find((u) => u.id === review.user_id).image_url
+                }`"
+                alt="User Avatar"
+                class="w-[50px] h-[50px] rounded-full object-cover"
+              />
+              <img
+                v-else
+                src="../assets/user.jpg"
+                alt="Default Avatar"
+                class="w-[50px] h-[50px] rounded-full object-cover"
+              />
+
+              <div class="flex flex-col">
+                <p class="font-medium">
+                  {{
+                    users.find((user) => user.id === review.user_id)
+                      ? users.find((user) => user.id === review.user_id).name
+                      : "Unknown User"
+                  }}
+                </p>
+                <p class="">
+                  {{
+                    users.find((user) => user.id === review.user_id)
+                      ? users.find((user) => user.id === review.user_id).address
+                      : "Unknown User"
+                  }}
+                </p>
+              </div>
+            </div>
+            <div class="flex">
+              <span
+                v-for="star in 5"
+                :key="star"
+                class="text-yellow-400 text-2xl flex"
+              >
+                {{ star <= review.rating ? "★" : "☆" }}
+              </span>
+            </div>
 
             {{ review.comment }}
           </div>
@@ -248,6 +287,7 @@
               ★
             </span>
           </div>
+
           <div class="flex flex-col gap-6">
             <textarea
               v-model="review"
@@ -258,10 +298,14 @@
               id=""
             />
             <p v-if="reviewError" class="text-red-500">{{ reviewError }}</p>
+            <p v-if="reviewMessage" class="mt-2 text-red-500">
+              {{ reviewMessage }}
+            </p>
             <button @click="addReview" class="btn w-[fit-content]">
               Submit
             </button>
           </div>
+
           <div class="mt-15">
             <div class="containerr !pt-[80px] !pb-[50px]">
               <div class="header pb-8">
@@ -504,10 +548,12 @@ export default {
       loading: true,
       number: 1,
       cartId: "",
+      users: [],
       rating: 0,
       review: "",
       reviewError: "",
       reviews: [],
+      reviewMessage: "",
     };
   },
   methods: {
@@ -544,29 +590,45 @@ export default {
       }
 
       this.reviewError = "";
+      this.reviewMessage = "";
 
       try {
-        await axios.post("http://127.0.0.1:8000/api/reviews", form, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
-        this.review = ""; // امسح التعليق بعد ما يتسجل
-        this.rating = 0; // رجّع النجوم فاضية
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/reviews",
+          form,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        this.reviewMessage = res.data.message || "Review added successfully!";
+
+        this.review = "";
+        this.rating = 0;
         await this.fetchReviews();
       } catch (err) {
         console.error(
           "Error adding review:",
           err.response?.data || err.message
         );
+
+        this.reviewMessage =
+          err.response?.data?.message || "Failed to add review. Try again.";
       }
     },
+
     async addToCart() {
       const formData = {
         product_id: this.product.id,
         quantity: this.number,
         price: this.product.price,
       };
+      if (!this.token) {
+        this.$router.push({ name: "Login" });
+        return;
+      }
 
       try {
         // get cart id
@@ -627,6 +689,12 @@ export default {
     },
   },
   async mounted() {
+    const usersRes = await axios.get("http://127.0.0.1:8000/api/users", {
+      headers: { Authorization: `Bearer ${this.token}` },
+    });
+
+    this.users = usersRes.data.data;
+    console.log("Users loaded:", this.users);
     // get products
     try {
       const res = await axios.get("http://127.0.0.1:8000/api/products");

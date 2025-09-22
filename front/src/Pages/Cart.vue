@@ -152,7 +152,7 @@
             </div>
             <div class="flex items-center justify-center mt-5">
               <router-link to="/cart/checkout">
-                <button @click="createPayment" class="btn m-auto">
+                <button @click="createOrUpdateOrder" class="btn m-auto">
                   Process to checkout
                 </button>
               </router-link>
@@ -202,9 +202,6 @@ export default {
     this.cartId = cartRes.data.data.id;
     console.log("Cart created:", this.cartId);
 
-    // const cartStore = useCartStore();
-    // this.cartId = cartStore.cartId;
-
     if (!this.cartId) {
       console.warn("No cartId found in store, skipping request");
       this.loading = false;
@@ -232,16 +229,58 @@ export default {
   methods: {
     // create payment
 
-    async createPayment() {
-      axios.post(
-        `http://127.0.0.1:8000/api/payment`,
-        { order_id },
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
+    async createOrUpdateOrder() {
+      try {
+        let orderId = localStorage.getItem("orderId");
+
+        if (!orderId) {
+          const res = await axios.post(
+            "http://127.0.0.1:8000/api/orders",
+            {
+              address: "Mansoura",
+            },
+            {
+              headers: { Authorization: `Bearer ${this.token}` },
+            }
+          );
+
+          orderId = res.data.data.id;
+          localStorage.setItem("orderId", orderId);
+          console.log("✅ Order created:", orderId);
+        } else {
+          console.log("ℹ️ Using existing order:", orderId);
         }
-      );
+
+        for (let item of this.products) {
+          try {
+            await axios.post(
+              `http://127.0.0.1:8000/api/orders/${orderId}/items`,
+              {
+                product_id: item.product.id,
+                quantity: item.quantity,
+              },
+              {
+                headers: { Authorization: `Bearer ${this.token}` },
+              }
+            );
+            console.log(`Item added: ${item.product.name}`);
+          } catch (err) {
+            if (err.response?.status === 409) {
+              console.warn(`⚠️ Item already exists: ${item.product.name}`);
+            } else {
+              console.error(
+                "Error adding item:",
+                err.response?.data || err.message
+              );
+            }
+          }
+        }
+      } catch (err) {
+        console.error(
+          "Error creating/updating order:",
+          err.response?.data || err.message
+        );
+      }
     },
 
     // delete
@@ -263,9 +302,6 @@ export default {
 
     // update cart
     async updateCart() {
-      // const cartStore = useCartStore();
-      // this.cartId = cartStore.cartId;
-
       if (!this.cartId) {
         console.warn("No cartId found in store, skipping request");
         this.loading = false;

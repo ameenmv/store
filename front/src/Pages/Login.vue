@@ -123,9 +123,7 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      alert("Form submitted!");
-    },
+    
     setTouched(theModel) {
       if (theModel == "name" || theModel == "all") {
         this.v$.form.name.$touch();
@@ -157,10 +155,10 @@ export default {
           }
         );
 
-        const token = res.data; // الـ token اللي رجع من السيرفر
+        const token = res.data; 
         localStorage.setItem("token", token);
 
-        // هات بيانات اليوزرين
+        
         const usersRes = await axios.get("http://127.0.0.1:8000/api/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -177,13 +175,13 @@ export default {
         localStorage.setItem("role", loggedUser.role);
         localStorage.setItem("userId", loggedUser.id);
 
-        // نظّف الفورم
+
         this.form.email = "";
         this.form.password = "";
         this.errors = {};
         this.v$.$reset();
 
-        // وديه حسب الـ role
+        
         if (loggedUser.role === "admin") {
           this.$router.push("/admin");
         } else if (loggedUser.role === "company") {

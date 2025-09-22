@@ -100,7 +100,6 @@ export default {
       this.products = res.data.data;
       this.loading = false;
 
-      // ✅ لو دخل على كاتيجوري مش موجودة
       const categories = [
         "all",
         ...new Set(this.products.map((p) => p.category.name.toLowerCase())),
